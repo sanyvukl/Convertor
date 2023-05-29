@@ -108,6 +108,9 @@
       const ukrInput = document.getElementById("ukr-value");
       const usInput = document.getElementById("us-value");
 
+      ukrInput.addEventListener("focus",(e)=>e.preventDefault());
+      usInput.addEventListener("focus",(e)=>e.preventDefault());
+     
       const convert = () => {
         const resultElement = document.getElementById("result");
         const ukrMetricInput = document.getElementById("ukr-metric");
