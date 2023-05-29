@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 100px;
+        background: url("./bg.jpg") no-repeat;
+      }
+
+      h1 {
+        text-align: center;
+        color: #863838;
+      }
+      .container {
+        padding: 20px;
+      }
+      .converter {
+
+        width: 420px;
+        margin: 10px auto;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.4);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+
+      input {
+        width: 350px;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        display: block;
+        width: 350px;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #863838;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Mamma's Bakery</h1>
+    <div class="converter">
+      <div class="container">
+        <label for="celsius">
+          <select name="ukr" id="ukr-metric">
+            <option value="celsius" selected>Цельсій °С</option>
+            <option value="gramms">Грами гр.</option>
+          </select>
+        </label>
+        <input
+          type="text"
+          id="ukr-value"
+          placeholder="Введіть температуру в градусах Цельсія"
+        />
+        <br />
+        <br />
+        <label for="fahrenheit">
+          <select name="us" id="us-metric">
+            <option value="fahrenheit" selected>Фарингейт °F</option>
+            <option value="oz">Унцій Oz.</option>
+          </select>
+        </label>
+        <input
+          type="text"
+          id="us-value"
+          placeholder="Введіть температуру у Фаренгейтах"
+        />
+
+        <button onclick="convert()">Перевести</button>
+
+        <div class="result" id="result"></div>
+      </div>
+    </div>
+
+    <script>
+      const ukrMetricInput = document.getElementById("ukr-metric");
+      const usMetricInput = document.getElementById("us-metric");
+      const resultElement = document.getElementById("result");
+      const ukrInput = document.getElementById("ukr-value");
+      const usInput = document.getElementById("us-value");
+
+      const convert = () => {
+        const resultElement = document.getElementById("result");
+        const ukrMetricInput = document.getElementById("ukr-metric");
+        const usMetricInput = document.getElementById("us-metric");
+
+        const ukrInput = document.getElementById("ukr-value");
+        const usInput = document.getElementById("us-value");
+
+        const ukrValue = parseFloat(ukrInput.value);
+        const usValue = parseFloat(usInput.value);
+
+        // For degrees
+        switch (ukrMetricInput.value) {
+          case "celsius":
+            if (!isNaN(ukrValue)) {
+              setFarenhate(ukrValue);
+            } else if (!isNaN(usValue)) {
+              setCelsius(usValue);
+            }
+            break;
+
+          case "gramms":
+            if (!isNaN(ukrValue)) {
+              setOz(ukrValue);
+            } else if (!isNaN(usValue)) {
+              setGrams(usValue);
+            }
+            break;
+
+          default:
+            break;
+        }
+      };
+
+      const setFarenhate = (ukrValue) => {
+        const convertedFahrenheit = (ukrValue * 9) / 5 + 32;
+        usInput.value = convertedFahrenheit.toFixed(2);
+        resultElement.textContent =
+          ukrValue +
+          " градусів по Цельсію дорівнює " +
+          convertedFahrenheit.toFixed(2) +
+          " градусів по Фарингейту.";
+      };
+      const setCelsius = (usValue) => {
+        const convertedCelsius = ((usValue - 32) * 5) / 9;
+        ukrInput.value = convertedCelsius.toFixed(2);
+        resultElement.textContent =
+          usValue +
+          " градусів по Фарингейту дорівнює " +
+          convertedCelsius.toFixed(2) +
+          " градусів по Цельсію.";
+      };
+      const setOz = (grams) => {
+        const convertedOz = grams / 28.34952;
+        usInput.value = convertedOz.toFixed(2);
+        resultElement.textContent =
+          grams + " грам(g) дорівнює " + convertedOz.toFixed(2) + " унцій(Oz).";
+      };
+      const setGrams = (oz) => {
+        const convertedGrams = oz * 28.34952;
+        ukrInput.value = convertedGrams.toFixed(2);
+        resultElement.textContent =
+          oz + " унцій(Oz) дорівнює " + convertedGrams.toFixed(2) + " грам(g)";
+      };
+
+      const onSelectChange = (e) => {
+        ukrInput.value = "";
+        usInput.value = "";
+        resultElement.textContent = "";
+
+        const { value, name } = e.target;
+
+        switch (value) {
+          case "celsius":
+            usMetricInput.value = "fahrenheit";
+            break;
+
+          case "gramms":
+            usMetricInput.value = "oz";
+            break;
+
+          case "fahrenheit":
+            ukrMetricInput.value = "celsius";
+            break;
+
+          case "oz":
+            ukrMetricInput.value = "gramms";
+            break;
+        }
+      };
+      document
+        .getElementById("ukr-metric")
+        .addEventListener("change", (e) => onSelectChange(e));
+      document
+        .getElementById("us-metric")
+        .addEventListener("change", (e) => onSelectChange(e));
+    </script>
+  </body>
+</html>
